@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Press Start 2P', cursive;
+    background-image: url(https://hdwallpaperim.com/wp-content/uploads/2017/08/104598-space-pixel_art-horizon-stars.jpg);
+    background-size: 90%;
+    
+}
+
+header {
+    color: white;
+    padding: 1em;
+    width: 100%;
+    text-align: center;
+}
+
+h1, h2 {
+    padding: .5em;
+    margin: .5em;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+#buttons {
+    display: flex;
+    align-items: center;
+    height: 60vh;
+}
+
+button {
+    font-family: 'Press Start 2p', cursive;
+    padding: 2em 2em;
+    margin: 0 6em;
+    font-size: 1em;
+}
+
+#tictactoe {
+    background: #5533ff;
+}
+
+
+#snake {
+    background: #ff5533;
+}
+
+#mancala {
+    background:#33ff55;
+}
+
+#connectfour {
+    background: #ff55ff
+}
+
+button:hover  {
+    border: 1px solid white;
+    background: none !important;
+    color: white;
+}
