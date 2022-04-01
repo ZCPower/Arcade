@@ -4,6 +4,7 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    padding: 0;
 }
 
 
@@ -49,7 +50,7 @@ button {
     padding: 2em 2em;
     margin: 0 6em;
     font-size: 1em;
-    border: none;
+    border: solid black 1px;
 }
 
 #tictactoe {
@@ -75,9 +76,33 @@ button:hover  {
     color: white;
 }
 
+#tictactoe:active {
+    background: #5533ff60 !important;
+}
+
+#snake:active {
+    background: #ff553390 !important;
+}
+
+#mancala:active {
+    background:#33ff5580 !important ;
+}
+
+#connectfour:active {
+    background: #ff55ff80 !important;
+}
+
 @media screen and (max-width: 1280px ){
     button {
     margin: 0 4em;
     font-size: 1em;
+    }
+
+    body {
+        background-size: 85%;
+    }
+
+    #buttons {
+        height: 45vh;
     }
 }

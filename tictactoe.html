@@ -7,10 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="entireproject.css">
+    <link rel="stylesheet" href="tictactoe.css">
 </head>
 
 <body>
+    <header>
+        <a href="index.html"><button>Game Selection</button></a>
+        <h1>Tic-Tac-Toe!</h1>
+    </header>
 
+    <div id="gameModeSelection">
+        <h2 id="h2">How many players?</h2>
+        <div id="buttonContainer">
+            <button id="singlePlayer">Single Player</button>
+            <button id="twoPlayer">Two Players</button>
+        </div>
+    </div>
+
+
+    <section id="gameContainer">
+        <div class="board">
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div class="cell"><span></span></div>
+            <div id="strike" class="strike "></div>
+        </div>
+    </section>
+    <script src="tic.js"></script>
 </body>
 
 </html>
