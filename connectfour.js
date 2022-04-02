@@ -1,6 +1,7 @@
 // As users playing a two player game we want to:
 
 // enter our names and have them displayed
+    //have two different text inputs and that take those names and change the innerText of the names that will be display on either side.
 // have our order chosen for us by the game
 // take turns by dropping our chip into a column on the grid
 // not be able to drop a chip into a totally filled column
