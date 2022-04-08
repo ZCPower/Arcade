@@ -10,17 +10,21 @@ const player2Name = document.createElement('input');
 player2Name.setAttribute('placeholder', 'Enter your name!')
 const board = document.getElementById('gameContainer');
 const buttonContainer = document.getElementById('buttonContainer');
+
 const mediumDisplay = window.matchMedia('(max-width: 1280px)')
-const largeDisplay = window.matchMedia('(min-width: 1281px')
-const cell0 = document.getElementById('cell0');
-const cell1 = document.getElementById('cell1');
-const cell2 = document.getElementById('cell2');
-const cell3 = document.getElementById('cell3');
-const cell4 = document.getElementById('cell4');
-const cell5 = document.getElementById('cell5');
-const cell6 = document.getElementById('cell6');
-const cell7 = document.getElementById('cell7');
-const cell8 = document.getElementById('cell8');
+const largeDisplay = window.matchMedia('(min-width: 1281px');
+
+const cellList = document.querySelectorAll('.cell')
+const cell0 = cellList[0];
+const cell1 = cellList[1];
+const cell2 = cellList[2];
+const cell3 = cellList[3];
+const cell4 = cellList[4];
+const cell5 = cellList[5];
+const cell6 = cellList[6];
+const cell7 = cellList[7];
+const cell8 = cellList[8];
+
 const gameContainer = document.getElementById('gameContainer')
 const gameTurnTracker = document.createElement('p')
 gameContainer.appendChild(gameTurnTracker);
@@ -33,13 +37,6 @@ replayButton.style.backgroundColor = 'red'
 replayButton.style.marginTop = '6vh'
 replayButton.style.color = 'white'
 
-//newGame Button
-const newGameButton = document.createElement('button');
-newGameButton.innerText = 'Game Mode Selection'
-newGameButton.style.padding = '2em'
-newGameButton.style.backgroundColor = 'red'
-newGameButton.style.marginTop = '6vh'
-newGameButton.style.color = 'white'
 
 //variables for sounds
 const error = document.getElementById('error')
@@ -123,7 +120,7 @@ function changePlayerOneName(event) {
 //generate's gameboard after player two is selected
 function generateBoard(event) {
     if (event.key === 'Enter') {
-        if (player2Name.value.length < 16 && player2Name.value.length > 0) {
+        if (player2Name.value.length < 16 && player2Name.value.length > 0 && player2Name.value !== player1Name.value) {
             game.playerTwo.name = player2Name.value
             board.style.display = 'flex';
             // gameModeSelection.remove();
@@ -145,7 +142,7 @@ function generateBoard(event) {
             }
         } else {
             errorSound()
-            h2.innerText = 'Please choose a name with a length of 1-16'
+            h2.innerText = 'Please choose a unique name with a length of 1-16'
             h2.style.color = 'yellow'
         }
     }
@@ -156,6 +153,7 @@ let turnCount = 0;
 function startingPlayer() {
     turnCount = Math.floor(Math.random() * 2);
     console.log(turnCount)
+    if (playerCount === 1) gameTurnTracker.remove()
     if (turnCount % 2 === 0) {
         console.log(`It is ${game.playerOne.name}'s turn!`)
         gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
@@ -163,20 +161,12 @@ function startingPlayer() {
     if (turnCount % 2 === 1) {
         console.log(`It is ${game.playerTwo.name}'s turn!`)
         gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
+        computerTurn()
     }
 }
 
-function updateGameArray() {
-    game.gameGrid[0] = cell0.innerText;
-    game.gameGrid[1] = cell1.innerText;
-    game.gameGrid[2] = cell2.innerText;
-    game.gameGrid[3] = cell3.innerText;
-    game.gameGrid[4] = cell4.innerText;
-    game.gameGrid[5] = cell5.innerText;
-    game.gameGrid[6] = cell6.innerText;
-    game.gameGrid[7] = cell7.innerText;
-    game.gameGrid[8] = cell8.innerText;
-}
+
+
 
 
 // if (turnCount % 2 === 0) gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
@@ -191,24 +181,35 @@ function addLetter(event) {
         turnCount++
         clickSound()
         if (turnCount % 2 === 1) {
-            gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
+
             event.target.innerText = game.playerOne.mark;
             updateGameArray()
             checkForWin()
+            if (playerCount === 2) gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
         }
         if (turnCount % 2 === 0) {
-            gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
-            event.target.innerText = game.playerTwo.mark;
+            event.target.innerText = game.playerTwo.mark
             updateGameArray()
             checkForWin()
+            if (playerCount === 2) gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
         }
         // console.log(turnCount)
         // console.log(event.target)
         // console.log(event.target.innerText)
         // console.log(game.gameGrid)
     }
+    if (playerCount === 1 && turnCount % 2 === 1) {
+        board.style.pointerEvents = 'none'
+        setTimeout(computerTurn, 600)
+    }
 }
 
+
+function updateGameArray() {
+    for (let i = 0; i < cellList.length; i++) {
+        game.gameGrid[i] = cellList[i].innerText
+    }
+}
 
 //eventListener's for all the inputs/buttons/cells
 singlePlayer.addEventListener('click', singlePlayerMode)
@@ -224,6 +225,10 @@ function checkForWin() {
     checkRows();
     checkColumns();
     checkDiagonals();
+
+    if (!game.gameGrid.includes('') && game.winner === '' && turnCount > 8) {
+        tie()
+    }
 }
 
 
@@ -286,6 +291,7 @@ function checkDiagonals() {
 
 
 function playerOneWins() {
+    game.winner = game.playerOne.name
     h2.innerText = `${game.playerOne.name} is the winner!`
     h2.style.color = 'green'
     gameContainer.appendChild(replayButton);
@@ -295,6 +301,7 @@ function playerOneWins() {
 }
 
 function playerTwoWins() {
+    game.winner = game.playerTwo.name
     h2.innerText = `${game.playerTwo.name} is the winner!`
     if (playerCount === 1) h2.style.color = 'red'
     else h2.style.color = 'green'
@@ -302,11 +309,16 @@ function playerTwoWins() {
     gameTurnTracker.remove();
     board.style.pointerEvents = 'none'
     replayButton.style.pointerEvents = 'auto'
-    //need to create a way that checks the player count. if player two wins and player count = 1, the text should be red. 
 }
 
-function newGame() {
-    gameModeSelection();
+function tie() {
+    game.winner = game.playerTwo.name
+    h2.innerText = 'Tie! There is no winner!'
+    h2.style.color = '#5599dd'
+    gameContainer.appendChild(replayButton)
+    gameTurnTracker.remove();
+    board.style.pointerEvents = 'none'
+    replayButton.style.pointerEvents = 'auto'
 }
 
 function replay() {
@@ -316,20 +328,15 @@ function replay() {
     gameContainer.appendChild(gameTurnTracker)
     startingPlayer()
     board.style.pointerEvents = 'auto'
+    game.winner = '';
 }
 
 //Clears the game board.
 function clearGameArray() {
-    game.gameGrid = [];
-    cell0.innerText = '';
-    cell1.innerText = '';
-    cell2.innerText = '';
-    cell3.innerText = '';
-    cell4.innerText = '';
-    cell5.innerText = '';
-    cell6.innerText = '';
-    cell7.innerText = '';
-    cell8.innerText = '';
+    for (let i = 0; i < cellList.length; i++) {
+        cellList[i].innerText = ''
+        game.gameGrid[i] = ''
+    }
 }
 
 function gameEndingSound() {
@@ -343,14 +350,27 @@ function reseth2Text() {
 
 
 //create a way for computer to play
+
+
 function computerTurn() {
-    let computerCell = ''
-    if (playerCount = 1 && turnCount % 2 === 1) {
-        computerCell = Math.floor(Math.random() * 8);
-        gameGrid[computerCell] = 'O';
-        cell[computerCell].innerHTML = 'O'
+    let computerCell;
+    computerCell = Math.floor(Math.random() * 8);
+    if (game.winner !== game.playerOne.name) {
+        if (playerCount === 1 && turnCount % 2 === 1) {
+            if (cellList[computerCell].innerText === '') {
+                game.gameGrid[computerCell] = 'O';
+                cellList[computerCell].innerText = 'O'
+                turnCount++
+                board.style.pointerEvents = 'auto'
+            } else
+                computerTurn()
+
+        }
+        checkForWin()
     }
 }
+
+
 
 
 
