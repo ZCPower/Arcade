@@ -31,24 +31,34 @@ gameContainer.appendChild(gameTurnTracker);
 
 //replay button
 const replayButton = document.createElement('button');
+replayButton.setAttribute('id', 'replay')
 replayButton.innerText = 'Replay!'
-replayButton.style.padding = '2em'
-replayButton.style.backgroundColor = 'red'
-replayButton.style.marginTop = '6vh'
-replayButton.style.color = 'white'
 
 
 //variables for sounds
+//Error Sound
 const error = document.getElementById('error')
 function errorSound() {
     error.play()
 }
+//clicking sound
 const click = document.getElementById('click')
 function clickSound() {
     click.play()
 }
-let playerCount = 0; //This variable will determine whether to continue on in playerSelection functions
-//starting game object
+//winning sound
+const victory = document.getElementById('victory')
+function victorySound() {
+    victory.play()
+}
+//Losing Sound
+const defeat = document.getElementById('defeat')
+function defeatSound() {
+    defeat.play()
+}
+
+//variable to keep track of whose turn it is
+let playerCount = 0;
 game = {
     playerOne: { name: player1Name.value, mark: 'X' },
     playerTwo: { name: player2Name.value, mark: 'O' },
@@ -56,10 +66,6 @@ game = {
         [],
     winner: ''
 }
-
-// [][]
-
-// gameGrid[0][1] = cell2.innerText
 
 //selects a single player mode
 function singlePlayerMode() {
@@ -98,7 +104,7 @@ function changePlayerOneName(event) {
                 gameModeSelection.style.marginTop = '7.5vh';
                 h2.innerText = game.playerOne.name + ' vs. ' + game.playerTwo.name
                 h2.style.color = 'white'
-                if (mediumDisplay.matches) h2.style.fontSize = '1rem'
+                if (mediumDisplay.matches) h2.style.fontSize = '1.3rem'
                 else h2.style.fontSize = '2rem'
             }
             else {
@@ -117,13 +123,12 @@ function changePlayerOneName(event) {
 }
 
 
-//generate's gameboard after player two is selected
+//generates gameboard after player two is selected
 function generateBoard(event) {
     if (event.key === 'Enter') {
         if (player2Name.value.length < 16 && player2Name.value.length > 0 && player2Name.value !== player1Name.value) {
             game.playerTwo.name = player2Name.value
             board.style.display = 'flex';
-            // gameModeSelection.remove();
             buttonContainer.remove();
             player2Name.remove();
             gameModeSelection.style.marginTop = '7.5vh';
@@ -147,7 +152,6 @@ function generateBoard(event) {
         }
     }
 }
-//Use this to determine starting player. Will use the if statements elsewhere while the game is playing. Should set turnCount to a global cariable and have it increment every time a play is made (turnCount ++)
 
 let turnCount = 0;
 function startingPlayer() {
@@ -164,17 +168,6 @@ function startingPlayer() {
         computerTurn()
     }
 }
-
-
-
-
-
-// if (turnCount % 2 === 0) gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
-// if (turnCount % 2 === 1) gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
-
-
-//On click edit the innerText of the cell. Check
-//add the innerText to the game corresponding game grid spot. 
 
 function addLetter(event) {
     if (event.target.innerText === '' || event.target.innerText === undefined) {
@@ -193,10 +186,6 @@ function addLetter(event) {
             checkForWin()
             if (playerCount === 2) gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
         }
-        // console.log(turnCount)
-        // console.log(event.target)
-        // console.log(event.target.innerText)
-        // console.log(game.gameGrid)
     }
     if (playerCount === 1 && turnCount % 2 === 1) {
         board.style.pointerEvents = 'none'
@@ -234,43 +223,124 @@ function checkForWin() {
 
 //a check to see if there is a winner after every turn. Could add a way to that indicates a winner on board i.e. a line through the section OR change color of text of the winning line.
 function checkRow1() {
-    if (game.gameGrid[0] === 'X' && game.gameGrid[1] === 'X' && game.gameGrid[2] === 'X') playerOneWins()
-    if (game.gameGrid[0] === 'O' && game.gameGrid[1] === 'O' && game.gameGrid[2] === 'O') playerTwoWins()
+    if (game.gameGrid[0] === 'X' && game.gameGrid[1] === 'X' && game.gameGrid[2] === 'X') {
+        playerOneWins()
+        cellList[0].style.color = 'blue';
+        cellList[1].style.color = 'blue';
+        cellList[2].style.color = 'blue';
+    }
+    if (game.gameGrid[0] === 'O' && game.gameGrid[1] === 'O' && game.gameGrid[2] === 'O') {
+        playerTwoWins()
+        cellList[0].style.color = 'blue';
+        cellList[1].style.color = 'blue';
+        cellList[2].style.color = 'blue';
+    }
 }
 function checkRow2() {
-    if (game.gameGrid[3] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[5] === 'X') playerOneWins()
-    if (game.gameGrid[3] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[5] === 'O') playerTwoWins()
+    if (game.gameGrid[3] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[5] === 'X') {
+        playerOneWins()
+        cellList[3].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[5].style.color = 'blue';
+    }
+    if (game.gameGrid[3] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[5] === 'O') {
+        cellList[3].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[5].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 function checkRow3() {
-    if (game.gameGrid[6] === 'X' && game.gameGrid[7] === 'X' && game.gameGrid[8] === 'X') playerOneWins()
-    if (game.gameGrid[6] === 'O' && game.gameGrid[7] === 'O' && game.gameGrid[8] === 'O') playerTwoWins()
+    if (game.gameGrid[6] === 'X' && game.gameGrid[7] === 'X' && game.gameGrid[8] === 'X') {
+        cellList[6].style.color = 'blue';
+        cellList[7].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerOneWins()
+    }
+    if (game.gameGrid[6] === 'O' && game.gameGrid[7] === 'O' && game.gameGrid[8] === 'O') {
+        cellList[6].style.color = 'blue';
+        cellList[7].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 
 function checkColumn1() {
-    if (game.gameGrid[0] === 'X' && game.gameGrid[3] === 'X' && game.gameGrid[6] === 'X') playerOneWins()
-    if (game.gameGrid[0] === 'O' && game.gameGrid[3] === 'O' && game.gameGrid[6] === 'O') playerTwoWins()
+    if (game.gameGrid[0] === 'X' && game.gameGrid[3] === 'X' && game.gameGrid[6] === 'X') {
+        cellList[0].style.color = 'blue';
+        cellList[3].style.color = 'blue';
+        cellList[6].style.color = 'blue';
+        playerOneWins()
+    }
+
+    if (game.gameGrid[0] === 'O' && game.gameGrid[3] === 'O' && game.gameGrid[6] === 'O') {
+        cellList[0].style.color = 'blue';
+        cellList[3].style.color = 'blue';
+        cellList[6].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 
 function checkColumn2() {
-    if (game.gameGrid[1] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[7] === 'X') playerOneWins()
-    if (game.gameGrid[1] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[7] === 'O') playerTwoWins()
+    if (game.gameGrid[1] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[7] === 'X') {
+        cellList[1].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[7].style.color = 'blue';
+        playerOneWins()
+    }
+    if (game.gameGrid[1] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[7] === 'O') {
+        cellList[1].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[7].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 
 function checkColumn3() {
-    if (game.gameGrid[2] === 'X' && game.gameGrid[5] === 'X' && game.gameGrid[8] === 'X') playerOneWins()
-    if (game.gameGrid[2] === 'O' && game.gameGrid[5] === 'O' && game.gameGrid[8] === 'O') playerTwoWins()
+    if (game.gameGrid[2] === 'X' && game.gameGrid[5] === 'X' && game.gameGrid[8] === 'X') {
+        cellList[2].style.color = 'blue';
+        cellList[5].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerOneWins()
+    }
+    if (game.gameGrid[2] === 'O' && game.gameGrid[5] === 'O' && game.gameGrid[8] === 'O') {
+        cellList[2].style.color = 'blue';
+        cellList[5].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 
 function checkDiagonal1() {
-    if (game.gameGrid[0] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[8] === 'X') playerOneWins()
-    if (game.gameGrid[0] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[8] === 'O') playerTwoWins()
+    if (game.gameGrid[0] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[8] === 'X') {
+        cellList[0].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerOneWins()
+    }
+
+    if (game.gameGrid[0] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[8] === 'O') {
+        cellList[0].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[8].style.color = 'blue';
+        playerTwoWins()
+    }
 }
 
 function checkDiagonal2() {
-    if (game.gameGrid[2] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[6] === 'X') playerOneWins()
-    if (game.gameGrid[2] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[6] === 'O') playerTwoWins()
+    if (game.gameGrid[2] === 'X' && game.gameGrid[4] === 'X' && game.gameGrid[6] === 'X') {
+        cellList[2].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[6].style.color = 'blue';
+        playerOneWins()
+    }
+    if (game.gameGrid[2] === 'O' && game.gameGrid[4] === 'O' && game.gameGrid[6] === 'O') {
+        cellList[2].style.color = 'blue';
+        cellList[4].style.color = 'blue';
+        cellList[6].style.color = 'blue';
+        playerTwoWins()
+    }
 }
-
 function checkRows() {
     checkRow1();
     checkRow2();
@@ -298,6 +368,7 @@ function playerOneWins() {
     gameTurnTracker.remove();
     board.style.pointerEvents = 'none'
     replayButton.style.pointerEvents = 'auto'
+    victorySound();
 }
 
 function playerTwoWins() {
@@ -307,14 +378,16 @@ function playerTwoWins() {
     else h2.style.color = 'green'
     gameContainer.appendChild(replayButton)
     gameTurnTracker.remove();
-    board.style.pointerEvents = 'none'
     replayButton.style.pointerEvents = 'auto'
+    board.style.pointerEvents = 'none'
+    if (playerCount == 1) defeatSound();
+    else victorySound()
 }
 
 function tie() {
     game.winner = game.playerTwo.name
     h2.innerText = 'Tie! There is no winner!'
-    h2.style.color = '#5599dd'
+    h2.style.color = 'yellow'
     gameContainer.appendChild(replayButton)
     gameTurnTracker.remove();
     board.style.pointerEvents = 'none'
@@ -329,6 +402,7 @@ function replay() {
     startingPlayer()
     board.style.pointerEvents = 'auto'
     game.winner = '';
+
 }
 
 //Clears the game board.
@@ -336,11 +410,8 @@ function clearGameArray() {
     for (let i = 0; i < cellList.length; i++) {
         cellList[i].innerText = ''
         game.gameGrid[i] = ''
+        cellList[i].style.color = 'white'
     }
-}
-
-function gameEndingSound() {
-
 }
 
 function reseth2Text() {
@@ -348,28 +419,160 @@ function reseth2Text() {
     h2.style.color = 'white'
 }
 
-
-//create a way for computer to play
-
-
+let computerCell;
 function computerTurn() {
-    let computerCell;
-    computerCell = Math.floor(Math.random() * 8);
-    if (game.winner !== game.playerOne.name) {
+
+    computerCell = Math.floor(Math.random() * 9); // generates a random number to play on, if a pre-determined move isn't available
+    if (game.winner !== game.playerOne.name) { //turns off the ability for the computer to make turns after game is won.
         if (playerCount === 1 && turnCount % 2 === 1) {
-            if (cellList[computerCell].innerText === '') {
+            if (cellList[4].innerText === '') {
+                cellList[4].innerText = 'O';
+                game.gameGrid[4] = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'O' && cellList[2].innerText === 'O' && cellList[1].innerText === '') {
+                game.gameGrid[1] = 'O';
+                cellList[1].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'O' && cellList[1].innerText === 'O' && cellList[2].innerText === '') {
+                game.gameGrid[2] = 'O';
+                cellList[2].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'O' && cellList[4].innerText === 'O' && cellList[8].innerText === '') {
+                game.gameGrid[8] = 'O';
+                cellList[8].innerText = 'O'
+                turnCount++
+            } else if (cellList[8].innerText === 'O' && cellList[4].innerText === 'O' && cellList[0].innerText === '') {
+                game.gameGrid[0] = 'O';
+                cellList[0].innerText = 'O'
+                turnCount++
+            } else if (cellList[1].innerText === 'O' && cellList[2].innerText === 'O' && cellList[0].innerText === '') {
+                game.gameGrid[0] = 'O';
+                cellList[0].innerText = 'O'
+                turnCount++
+            } else if (cellList[5].innerText === 'O' && cellList[4].innerText === 'O' && cellList[3].innerText === '') {
+                game.gameGrid[3] = 'O';
+                cellList[3].innerText = 'O'
+                turnCount++
+            } else if (cellList[6].innerText === 'O' && cellList[4].innerText === 'O' && cellList[2].innerText === '') {
+                game.gameGrid[2] = 'O';
+                cellList[2].innerText = 'O'
+                turnCount++
+            }
+            else if (cellList[2].innerText === 'O' && cellList[4].innerText === 'O' && cellList[6].innerText === '') {
+                game.gameGrid[6] = 'O';
+                cellList[6].innerText = 'O'
+                turnCount++
+            } else if (cellList[2].innerText === 'O' && cellList[8].innerText === 'O' && cellList[5].innerText === '') {
+                game.gameGrid[5] = 'O';
+                cellList[5].innerText = 'O'
+                turnCount++
+            }
+            else if (cellList[6].innerText === 'O' && cellList[8].innerText === 'O' && cellList[7].innerText === '') {
+                game.gameGrid[7] = 'O';
+                cellList[7].innerText = 'O'
+                turnCount++
+            } else if (cellList[4].innerText === 'O' && cellList[3].innerText === 'O' && cellList[5].innerText === '') {
+                game.gameGrid[5] = 'O';
+                cellList[5].innerText = 'O'
+                turnCount++
+            } else if (cellList[4].innerText === 'O' && cellList[7].innerText === 'O' && cellList[1].innerText === '') {
+                game.gameGrid[1] = 'O';
+                cellList[1].innerText = 'O'
+                turnCount++
+            } else if (cellList[1].innerText === 'O' && cellList[4].innerText === 'O' && cellList[7].innerText === '') {
+                game.gameGrid[7] = 'O';
+                cellList[7].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'X' && cellList[4].innerText === 'X' && cellList[8].innerText === '') {
+                game.gameGrid[8] = 'O';
+                cellList[8].innerText = 'O'
+                turnCount++
+            } else if (cellList[6].innerText === 'X' && cellList[8].innerText === 'X' && cellList[7].innerText === '') {
+                game.gameGrid[7] = 'O';
+                cellList[7].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'X' && cellList[2].innerText === 'X' && cellList[1].innerText === '') {
+                game.gameGrid[1] = 'O';
+                cellList[1].innerText = 'O'
+                turnCount++
+            } else if (cellList[8].innerText === 'X' && cellList[2].innerText === 'X' && cellList[5].innerText === '') {
+                game.gameGrid[5] = 'O';
+                cellList[5].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'X' && cellList[6].innerText === 'X' && cellList[3].innerText === '') {
+                game.gameGrid[3] = 'O';
+                cellList[3].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'X' && cellList[1].innerText === 'X' && cellList[2].innerText === '') {
+                game.gameGrid[2] = 'O';
+                cellList[2].innerText = 'O'
+                turnCount++
+            } else if (cellList[0].innerText === 'X' && cellList[3].innerText === 'X' && cellList[6].innerText === '') {
+                game.gameGrid[6] = 'O';
+                cellList[6].innerText = 'O'
+                turnCount++
+            } else if (cellList[8].innerText === 'X' && cellList[4].innerText === 'X' && cellList[0].innerText === '') {
+                game.gameGrid[0] = 'O';
+                cellList[0].innerText = 'O'
+                turnCount++
+            } else if (cellList[6].innerText === 'X' && cellList[4].innerText === 'X' && cellList[2].innerText === '') {
+                game.gameGrid[2] = 'O';
+                cellList[2].innerText = 'O'
+                turnCount++
+            } else if (cellList[2].innerText === 'X' && cellList[4].innerText === 'X' && cellList[6].innerText === '') {
+                game.gameGrid[6] = 'O';
+                cellList[6].innerText = 'O'
+                turnCount++
+            } else if (cellList[1].innerText === 'X' && cellList[4].innerText === 'X' && cellList[7].innerText === '') {
+                game.gameGrid[7] = 'O';
+                cellList[7].innerText = 'O'
+                turnCount++
+            } else if (cellList[5].innerText === 'X' && cellList[4].innerText === 'X' && cellList[3].innerText === '') {
+                game.gameGrid[3] = 'O';
+                cellList[3].innerText = 'O'
+                turnCount++
+            } else if (cellList[3].innerText === 'X' && cellList[4].innerText === 'X' && cellList[5].innerText === '') {
+                game.gameGrid[5] = 'O';
+                cellList[5].innerText = 'O'
+                turnCount++
+            } else if (cellList[2].innerText === 'X' && cellList[5].innerText === 'X' && cellList[8].innerText === '') {
+                game.gameGrid[8] = 'O';
+                cellList[8].innerText = 'O'
+                turnCount++
+            } else if (cellList[4].innerText === 'X' && cellList[7].innerText === 'X' && cellList[1].innerText === '') {
+                game.gameGrid[1] = 'O';
+                cellList[1].innerText = 'O'
+                turnCount++
+            } else if (cellList[5].innerText === 'X' && cellList[8].innerText === 'X' && cellList[2].innerText === '') {
+                game.gameGrid[2] = 'O';
+                cellList[2].innerText = 'O'
+                turnCount++
+            } else if (cellList[3].innerText === 'X' && cellList[6].innerText === 'X' && cellList[0].innerText === '') {
+                game.gameGrid[0] = 'O';
+                cellList[0].innerText = 'O'
+                turnCount++
+            } else if (cellList[1].innerText === 'X' && cellList[2].innerText === 'X' && cellList[0].innerText === '') {
+                game.gameGrid[0] = 'O';
+                cellList[0].innerText = 'O'
+                turnCount++
+            } else if (cellList[6].innerText === 'X' && cellList[7].innerText === 'X' && cellList[8].innerText === '') {
+                game.gameGrid[8] = 'O';
+                cellList[8].innerText = 'O'
+                turnCount++
+            } else if (cellList[7].innerText === 'X' && cellList[8].innerText === 'X' && cellList[6].innerText === '') {
+                game.gameGrid[6] = 'O';
+                cellList[6].innerText = 'O'
+                turnCount++
+            } else if (cellList[computerCell].innerText === '') {
                 game.gameGrid[computerCell] = 'O';
                 cellList[computerCell].innerText = 'O'
                 turnCount++
-                board.style.pointerEvents = 'auto'
-            } else
-                computerTurn()
-
+            } else computerTurn();
+            board.style.pointerEvents = 'auto'
         }
         checkForWin()
     }
 }
-
 
 
 
