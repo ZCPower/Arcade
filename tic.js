@@ -4,7 +4,7 @@ const h2 = document.getElementById('h2');
 const singlePlayer = document.getElementById('singlePlayer');
 const twoPlayer = document.getElementById('twoPlayer');
 const gameModeSelection = document.getElementById('gameModeSelection')
-const player1Name = document.createElement('input');
+const player1Name = document.createElement('input')
 player1Name.setAttribute('placeholder', 'Enter your name!')
 const player2Name = document.createElement('input');
 player2Name.setAttribute('placeholder', 'Enter your name!')
@@ -573,9 +573,3 @@ function computerTurn() {
         checkForWin()
     }
 }
-
-
-
-
-    //create a winning notification and animation
-    //restart game without having to reset the browser

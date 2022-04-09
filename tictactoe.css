@@ -4,6 +4,7 @@
         cursive;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 body {
@@ -12,7 +13,9 @@ body {
     align-items: center;
     flex-direction: column;
     color: white;
+    overflow: hidden;
 }
+
 
 #gameModeSelection {
     display: flex;
@@ -66,7 +69,7 @@ input {
     flex-basis: 150px;
     align-items: center;
     justify-content: center;
-    font-size: 50px;
+    font-size: 55px;
     line-height: 0vh;
     font-weight: 700;
 
@@ -89,7 +92,7 @@ input {
 }
 
 #replay {
-    padding: 2em;
+    padding: 2.2em;
     background: red;
     margin-top: 12vh;
     color: white;
@@ -108,7 +111,93 @@ p {
     padding: 1em;
 }
 
+@media screen and (max-width: 1820px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.8em !important;
+    }
+
+    .board {
+        height: 420px;
+        width: 420px;
+    }
+
+    .cell {
+        flex-basis: 140px;
+        font-size: 50px;
+    }
+
+    #replay {
+        margin-top: 8vh;
+        padding: 1.3em;
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 1720px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    .board {
+        height: 420px;
+        width: 420px;
+    }
+
+    .cell {
+        flex-basis: 140px;
+        font-size: 50px;
+    }
+
+    #replay {
+        margin-top: 8vh;
+        padding: 1.3em;
+        font-size: 1.2em;
+    }
+}
+
+@media screen and (max-width: 1520px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    .board {
+        height: 360px;
+        width: 360px;
+    }
+
+    .cell {
+        flex-basis: 120px;
+        font-size: 45px;
+    }
+
+    #replay {
+        margin-top: 10vh;
+        padding: 1.5em;
+        font-size: 1em;
+    }
+}
+
 @media screen and (max-width: 1280px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
     .board {
         height: 300px;
         width: 300px;
@@ -116,24 +205,124 @@ p {
 
     .cell {
         flex-basis: 100px;
+        font-size: 36px;
     }
 
     #replay {
         margin-top: 6vh;
+        padding: 1.5em;
+        font-size: 1em;
     }
 }
 
 @media screen and (max-width: 760px) {
     h1 {
-        font-size: 1.5em;
+        font-size: 1.3em;
     }
 
     h2 {
-        font-size: 1.4em !important;
+        font-size: 1.2em !important;
+    }
+
+    #gameModeSelection button {
+        padding: 1em;
+        font-size: .8em;
+    }
+
+    #gameModeSelection button:hover {
+        padding: 1em;
+        font-size: .8em;
+    }
+
+    .board {
+        height: 300px;
+        width: 300px;
+    }
+
+    .cell {
+        flex-basis: 100px;
+        font-size: 35px;
+    }
+
+
+    #replay {
+        margin-top: 6vh;
+        padding: 1em;
+        font-size: 1em;
+    }
+
+    #refresh {
+        padding: .6em;
+        font-size: .6em;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    h1 {
+        font-size: 1em !important;
+    }
+
+    h2 {
+        font-size: 1em !important;
+    }
+
+    #gameModeSelection button {
+        padding: 1em;
+        font-size: .7em;
+    }
+
+    #gameModeSelection button:hover {
+        padding: 1em;
+        font-size: .7em;
+    }
+
+    .board {
+        height: 270px;
+        width: 270px;
+    }
+
+    .cell {
+        flex-basis: 90px;
+        font-size: 35px;
     }
 
     #replay {
-        padding: 1em;
-        font-size: 1em;
+        margin-top: 12vh;
+    }
+
+    #refresh {
+        font-size: .6em;
+        padding: .8em;
+        left: 1em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+
+
+    #gameModeSelection button {
+        padding: .8em;
+        font-size: .6em;
+    }
+
+    #gameModeSelection button:hover {
+        padding: 0.8em;
+        font-size: .6em;
+    }
+
+    h1 {
+        font-size: .9em !important
+    }
+
+    h2 {
+        font-size: .9em !important
+    }
+
+
+    #refresh {
+        padding: .6em;
+        font-size: .5em;
+        top: .6em;
+        left: 1em;
     }
 }
