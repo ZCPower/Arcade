@@ -1,4 +1,3 @@
-
 //all the dom variables
 const h2 = document.getElementById('h2');
 const singlePlayer = document.getElementById('singlePlayer');
@@ -10,50 +9,36 @@ const player2Name = document.createElement('input');
 player2Name.setAttribute('placeholder', 'Enter your name!')
 const board = document.getElementById('gameContainer');
 const buttonContainer = document.getElementById('buttonContainer');
-
-const cellList = document.querySelectorAll('.cell')
-
 const gameContainer = document.getElementById('gameContainer')
 const gameTurnTracker = document.createElement('p')
 gameContainer.appendChild(gameTurnTracker);
-
 //replay button
 const replayButton = document.createElement('button');
 replayButton.setAttribute('id', 'replay')
 replayButton.innerText = 'Replay!'
 
-
-//variables for sounds
-//Error Sound
-const error = document.getElementById('error')
-function errorSound() {
-    error.play()
-}
-//clicking sound
-const click = document.getElementById('click')
-function clickSound() {
-    click.play()
-}
-//winning sound
-const victory = document.getElementById('victory')
-function victorySound() {
-    victory.play()
-}
-//Losing Sound
-const defeat = document.getElementById('defeat')
-function defeatSound() {
-    defeat.play()
-}
+//creates a list of all my cells
+const cellList = document.querySelectorAll('.cell')
 
 //variable to keep track of whose turn it is
 let playerCount = 0;
+
 game = {
-    playerOne: { name: player1Name.value, mark: 'X' },
-    playerTwo: { name: player2Name.value, mark: 'O' },
+    playerOne: {
+        name: player1Name.value,
+        mark: 'X'
+    },
+    playerTwo: {
+        name:
+            player2Name.value,
+        mark: 'O'
+    },
     gameGrid:
         [],
     winner: ''
 }
+
+
 
 //selects a single player mode
 function singlePlayerMode() {
@@ -195,7 +180,65 @@ function checkForWin() {
     }
 }
 
+function playerOneWins() {
+    game.winner = game.playerOne.name
+    h2.innerText = `${game.playerOne.name} is the winner!`
+    h2.style.color = 'green'
+    gameContainer.appendChild(replayButton);
+    gameTurnTracker.remove();
+    board.style.pointerEvents = 'none'
+    replayButton.style.pointerEvents = 'auto'
+    victorySound();
+}
 
+function playerTwoWins() {
+    game.winner = game.playerTwo.name
+    h2.innerText = `${game.playerTwo.name} is the winner!`
+    if (playerCount === 1) h2.style.color = 'red'
+    else h2.style.color = 'green'
+    gameContainer.appendChild(replayButton)
+    gameTurnTracker.remove();
+    replayButton.style.pointerEvents = 'auto'
+    board.style.pointerEvents = 'none'
+    if (playerCount == 1) defeatSound();
+    else victorySound()
+}
+
+function tie() {
+    game.winner = game.playerTwo.name
+    h2.innerText = 'Tie! There is no winner!'
+    h2.style.color = 'yellow'
+    gameContainer.appendChild(replayButton)
+    gameTurnTracker.remove();
+    board.style.pointerEvents = 'none'
+    replayButton.style.pointerEvents = 'auto'
+}
+
+function replay() {
+    clearGameArray();
+    reseth2Text();
+    replayButton.remove();
+    gameContainer.appendChild(gameTurnTracker)
+    startingPlayer()
+    board.style.pointerEvents = 'auto'
+    game.winner = '';
+}
+
+//Clears the game board.
+function clearGameArray() {
+    for (let i = 0; i < cellList.length; i++) {
+        cellList[i].innerText = ''
+        game.gameGrid[i] = ''
+        cellList[i].style.color = 'white'
+    }
+}
+
+function reseth2Text() {
+    h2.innerText = `${game.playerOne.name} vs. ${game.playerTwo.name}`
+    h2.style.color = 'white'
+}
+
+//EVERYTHING UNDER THIS IS A GIANT WALL OF CODE!
 ///checks each section of the game for a win
 function checkRow1() {
     if (game.gameGrid[0] === 'X' && game.gameGrid[1] === 'X' && game.gameGrid[2] === 'X') {
@@ -335,66 +378,6 @@ function checkDiagonals() {
     checkDiagonal2();
 }
 
-
-
-function playerOneWins() {
-    game.winner = game.playerOne.name
-    h2.innerText = `${game.playerOne.name} is the winner!`
-    h2.style.color = 'green'
-    gameContainer.appendChild(replayButton);
-    gameTurnTracker.remove();
-    board.style.pointerEvents = 'none'
-    replayButton.style.pointerEvents = 'auto'
-    victorySound();
-}
-
-function playerTwoWins() {
-    game.winner = game.playerTwo.name
-    h2.innerText = `${game.playerTwo.name} is the winner!`
-    if (playerCount === 1) h2.style.color = 'red'
-    else h2.style.color = 'green'
-    gameContainer.appendChild(replayButton)
-    gameTurnTracker.remove();
-    replayButton.style.pointerEvents = 'auto'
-    board.style.pointerEvents = 'none'
-    if (playerCount == 1) defeatSound();
-    else victorySound()
-}
-
-function tie() {
-    game.winner = game.playerTwo.name
-    h2.innerText = 'Tie! There is no winner!'
-    h2.style.color = 'yellow'
-    gameContainer.appendChild(replayButton)
-    gameTurnTracker.remove();
-    board.style.pointerEvents = 'none'
-    replayButton.style.pointerEvents = 'auto'
-}
-
-function replay() {
-    clearGameArray();
-    reseth2Text();
-    replayButton.remove();
-    gameContainer.appendChild(gameTurnTracker)
-    startingPlayer()
-    board.style.pointerEvents = 'auto'
-    game.winner = '';
-}
-
-//Clears the game board.
-function clearGameArray() {
-    for (let i = 0; i < cellList.length; i++) {
-        cellList[i].innerText = ''
-        game.gameGrid[i] = ''
-        cellList[i].style.color = 'white'
-    }
-}
-
-function reseth2Text() {
-    h2.innerText = `${game.playerOne.name} vs. ${game.playerTwo.name}`
-    h2.style.color = 'white'
-}
-
 let computerCell;
 function computerTurn() {
 
@@ -433,8 +416,7 @@ function computerTurn() {
                 game.gameGrid[2] = 'O';
                 cellList[2].innerText = 'O'
                 turnCount++
-            }
-            else if (cellList[2].innerText === 'O' && cellList[4].innerText === 'O' && cellList[6].innerText === '') {
+            } else if (cellList[2].innerText === 'O' && cellList[4].innerText === 'O' && cellList[6].innerText === '') {
                 game.gameGrid[6] = 'O';
                 cellList[6].innerText = 'O'
                 turnCount++
@@ -442,8 +424,7 @@ function computerTurn() {
                 game.gameGrid[5] = 'O';
                 cellList[5].innerText = 'O'
                 turnCount++
-            }
-            else if (cellList[6].innerText === 'O' && cellList[8].innerText === 'O' && cellList[7].innerText === '') {
+            } else if (cellList[6].innerText === 'O' && cellList[8].innerText === 'O' && cellList[7].innerText === '') {
                 game.gameGrid[7] = 'O';
                 cellList[7].innerText = 'O'
                 turnCount++
@@ -548,4 +529,26 @@ function computerTurn() {
         }
         checkForWin()
     }
+}
+
+//variables for sounds
+//Error Sound
+const error = document.getElementById('error')
+function errorSound() {
+    error.play()
+}
+//clicking sound
+const click = document.getElementById('click')
+function clickSound() {
+    click.play()
+}
+//winning sound
+const victory = document.getElementById('victory')
+function victorySound() {
+    victory.play()
+}
+//Losing Sound
+const defeat = document.getElementById('defeat')
+function defeatSound() {
+    defeat.play()
 }
