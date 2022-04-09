@@ -111,6 +111,10 @@ p {
     padding: 1em;
 }
 
+h2 {
+    font-size: 2em !important
+}
+
 @media screen and (max-width: 1820px) {
     h1 {
         font-size: 1.5em;

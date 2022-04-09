@@ -11,19 +11,7 @@ player2Name.setAttribute('placeholder', 'Enter your name!')
 const board = document.getElementById('gameContainer');
 const buttonContainer = document.getElementById('buttonContainer');
 
-const mediumDisplay = window.matchMedia('(max-width: 1280px)')
-const largeDisplay = window.matchMedia('(min-width: 1281px');
-
 const cellList = document.querySelectorAll('.cell')
-const cell0 = cellList[0];
-const cell1 = cellList[1];
-const cell2 = cellList[2];
-const cell3 = cellList[3];
-const cell4 = cellList[4];
-const cell5 = cellList[5];
-const cell6 = cellList[6];
-const cell7 = cellList[7];
-const cell8 = cellList[8];
 
 const gameContainer = document.getElementById('gameContainer')
 const gameTurnTracker = document.createElement('p')
@@ -95,17 +83,13 @@ function changePlayerOneName(event) {
                 game.playerOne.name = player1Name.value;
                 game.playerTwo.name = 'Computer'
                 board.style.display = 'flex';
-                gameContainer.display = 'flex'
                 gameContainer.style.flexDirection = 'column'
-                // gameModeSelection.remove();
                 buttonContainer.remove();
                 player1Name.remove();
                 startingPlayer()
                 gameModeSelection.style.marginTop = '7.5vh';
                 h2.innerText = game.playerOne.name + ' vs. ' + game.playerTwo.name
                 h2.style.color = 'white'
-                if (mediumDisplay.matches) h2.style.fontSize = '1.3rem'
-                else h2.style.fontSize = '2rem'
             }
             else {
                 game.playerOne.name = player1Name.value;
@@ -138,13 +122,7 @@ function generateBoard(event) {
             startingPlayer();
             if (game.playerTwo.name === undefined || game.playerTwo.name === '') {
                 h2.innerText = game.playerOne.name + ' vs.  Computer'
-                if (mediumDisplay.matches) h2.style.fontSize = '1rem'
-                else h2.style.fontSize = '2rem'
-            } else {
-                h2.innerText = game.playerOne.name + ' vs. ' + game.playerTwo.name
-                if (mediumDisplay.matches) h2.style.fontSize = '1rem'
-                else h2.style.fontSize = '2rem'
-            }
+            } else h2.innerText = game.playerOne.name + ' vs. ' + game.playerTwo.name
         } else {
             errorSound()
             h2.innerText = 'Please choose a unique name with a length of 1-16'
@@ -159,11 +137,11 @@ function startingPlayer() {
     console.log(turnCount)
     if (playerCount === 1) gameTurnTracker.remove()
     if (turnCount % 2 === 0) {
-        console.log(`It is ${game.playerOne.name}'s turn!`)
+        // console.log(`It is ${game.playerOne.name}'s turn!`)
         gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
     }
     if (turnCount % 2 === 1) {
-        console.log(`It is ${game.playerTwo.name}'s turn!`)
+        // console.log(`It is ${game.playerTwo.name}'s turn!`)
         gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
         computerTurn()
     }
@@ -174,16 +152,11 @@ function addLetter(event) {
         turnCount++
         clickSound()
         if (turnCount % 2 === 1) {
-
             event.target.innerText = game.playerOne.mark;
-            updateGameArray()
-            checkForWin()
             if (playerCount === 2) gameTurnTracker.innerText = `It is ${game.playerTwo.name}'s turn!`
         }
         if (turnCount % 2 === 0) {
             event.target.innerText = game.playerTwo.mark
-            updateGameArray()
-            checkForWin()
             if (playerCount === 2) gameTurnTracker.innerText = `It is ${game.playerOne.name}'s turn!`
         }
     }
@@ -191,9 +164,11 @@ function addLetter(event) {
         board.style.pointerEvents = 'none'
         setTimeout(computerTurn, 600)
     }
+    updateGameArray()
+    checkForWin()
 }
 
-
+//updates gameArray based off of the innerText of each cell which is determined from the above function.
 function updateGameArray() {
     for (let i = 0; i < cellList.length; i++) {
         game.gameGrid[i] = cellList[i].innerText
@@ -221,7 +196,7 @@ function checkForWin() {
 }
 
 
-//a check to see if there is a winner after every turn. Could add a way to that indicates a winner on board i.e. a line through the section OR change color of text of the winning line.
+///checks each section of the game for a win
 function checkRow1() {
     if (game.gameGrid[0] === 'X' && game.gameGrid[1] === 'X' && game.gameGrid[2] === 'X') {
         playerOneWins()
@@ -341,6 +316,8 @@ function checkDiagonal2() {
         playerTwoWins()
     }
 }
+
+
 function checkRows() {
     checkRow1();
     checkRow2();
@@ -402,7 +379,6 @@ function replay() {
     startingPlayer()
     board.style.pointerEvents = 'auto'
     game.winner = '';
-
 }
 
 //Clears the game board.
